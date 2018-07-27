@@ -2,8 +2,8 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
-#include "TankAIController.h"
 #include "Tank.h"
+#include "TankAIController.h"
 
 
 
@@ -11,8 +11,7 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 }
-
-void ATankAIController::SetPawn(APawn *InPawn)
+void ATankAIController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn);
 	if (InPawn)
@@ -23,12 +22,11 @@ void ATankAIController::SetPawn(APawn *InPawn)
 		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
 	}
 }
-
 void ATankAIController::OnPossessedTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Received AI!"))
+	if (!ensure(GetPawn())) { return; }
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
-
 // Called every frame
 void ATankAIController::Tick(float DeltaTime)
 {
